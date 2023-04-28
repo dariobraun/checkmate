@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Expense } from "../types/expense";
 import { Category } from "../types/category";
 import ExpensesTable from "./expenses-table";
@@ -26,7 +26,27 @@ function ExpenseTracker() {
     },
   ]);
 
+  useEffect(() => {
+    getExpense().then((data) => {
+      if (data) {
+        setExpenses([...expenses, data.data]);
+      }
+    });
+  }, []);
+
   const formRef: React.RefObject<HTMLFormElement> = React.createRef();
+
+  // TEST DB FUNCTION
+  const getExpense = async () => {
+    try {
+      // get pics from Netlify function
+      const res = await fetch("/.netlify/functions/get-expense");
+      const data: { message: string; data: Expense } = await res.json();
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
