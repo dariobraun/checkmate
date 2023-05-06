@@ -82,6 +82,7 @@ function ExpenseTracker() {
 
   // TODO: Move to service component
   const removeExpense = async (expense: Expense) => {
+    setExpenses(expenses.filter((ex) => ex.id !== expense.id));
     try {
       await fetch("/.netlify/functions/expense-delete", {
         body: JSON.stringify(expense),
