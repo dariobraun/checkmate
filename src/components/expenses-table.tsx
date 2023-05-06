@@ -6,9 +6,10 @@ import { ExpenseCategoryColor } from "../enums/expense-category-color";
 interface ExpensesTableProps {
   expenses: Expense[];
   categories: Category[];
+  onClick: (expense: Expense) => void;
 }
 
-function ExpensesTable({ expenses, categories }: ExpensesTableProps) {
+function ExpensesTable({ expenses, categories, onClick }: ExpensesTableProps) {
   function getGradient(color: ExpenseCategoryColor) {
     switch (color) {
       case ExpenseCategoryColor.BLUE:
@@ -33,9 +34,6 @@ function ExpensesTable({ expenses, categories }: ExpensesTableProps) {
                 text-left
                 uppercase
                 border-b
-                dark:border-gray-700
-                bg-gray-50
-                dark:bg-gray-800
               "
             >
               <th className="px-4 py-3 bg-indigo">#</th>
@@ -48,9 +46,7 @@ function ExpensesTable({ expenses, categories }: ExpensesTableProps) {
           <tbody
             className="
               divide-y
-              dark:divide-gray-700
               bg-white
-              dark:bg-gray-800
             "
           >
             {categories.map((category) => (
@@ -76,13 +72,7 @@ function ExpensesTable({ expenses, categories }: ExpensesTableProps) {
                 {expenses
                   .filter((expense) => expense.category?.name === category.name)
                   .map((expense, index) => (
-                    <tr
-                      key={expense.id}
-                      className="
-                  hover:bg-gray-100
-                  dark:hover:bg-gray-600
-                "
-                    >
+                    <tr key={expense.id} onClick={() => onClick(expense)}>
                       <td className="px-4 py-3">{index + 1}</td>
                       <td className="px-4 py-3">{expense.description}</td>
                       <td className="px-4 py-3">{expense.category?.name}</td>

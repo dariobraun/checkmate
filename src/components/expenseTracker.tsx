@@ -5,6 +5,7 @@ import ExpensesTable from "./expenses-table";
 import ExpenseInputs from "./expense-inputs";
 import { ExpenseCategory } from "../enums/expense-category";
 import { ExpenseCategoryColor } from "../enums/expense-category-color";
+import { Document } from "../types/fauna/document.ts";
 
 function ExpenseTracker() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -27,22 +28,63 @@ function ExpenseTracker() {
   ]);
 
   useEffect(() => {
-    getExpense().then((data) => {
+    getAllExpenses().then((data) => {
       if (data) {
-        setExpenses([...expenses, data.data]);
+        setExpenses([...expenses, ...data]);
       }
     });
   }, []);
 
   const formRef: React.RefObject<HTMLFormElement> = React.createRef();
 
-  // TEST DB FUNCTION
-  const getExpense = async () => {
+  // TODO: Move to service component
+  const getAllExpenses = async () => {
     try {
-      // get pics from Netlify function
-      const res = await fetch("/.netlify/functions/get-expense");
-      const data: { message: string; data: Expense } = await res.json();
-      return data;
+      const res = await fetch("/.netlify/functions/expense-get-all");
+      const jsonData: { data: Document[] } = await res.json();
+
+      const formattedData = jsonData.data.map((document) => document.data);
+      return formattedData;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // TODO: Move to service component
+  const addExpense = async (expense: Expense) => {
+    try {
+      await fetch("/.netlify/functions/expense-create", {
+        body: JSON.stringify(expense),
+        method: "POST",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // TODO: Move to service component
+  const getExpense = async (expense: Expense) => {
+    try {
+      const res = await fetch("/.netlify/functions/expense-get", {
+        body: JSON.stringify(expense),
+        method: "POST",
+      });
+
+      await res.json().then(console.log);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // TODO: Move to service component
+  const removeExpense = async (expense: Expense) => {
+    try {
+      const res = await fetch("/.netlify/functions/expense-delete", {
+        body: JSON.stringify(expense),
+        method: "POST",
+      });
+
+      await res.json().then(console.log);
     } catch (error) {
       console.log(error);
     }
@@ -60,13 +102,18 @@ function ExpenseTracker() {
       ),
     };
 
-    setExpenses([...expenses, newExpense]);
+    addExpense(newExpense);
+
     formRef.current?.reset();
   };
 
   return (
     <>
-      <ExpensesTable expenses={expenses} categories={categories} />
+      <ExpensesTable
+        expenses={expenses}
+        categories={categories}
+        onClick={removeExpense}
+      />
       <hr className="border-t-4 my-4" />
       <ExpenseInputs
         categories={categories}

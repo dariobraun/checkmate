@@ -11,13 +11,15 @@ const q = faunadb.query;
 exports.handler = async function () {
   try {
     const res = await client.query(
-      q.Get(q.Ref(q.Collection("expenses"), "362919020487246028"))
+      q.Map(
+        q.Paginate(q.Match(q.Index("all_expenses"))),
+        q.Lambda((x) => q.Get(x))
+      )
     );
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: "Successfully fetched expense",
         data: res.data,
       }),
     };
