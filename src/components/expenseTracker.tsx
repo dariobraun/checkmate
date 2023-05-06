@@ -30,7 +30,7 @@ function ExpenseTracker() {
   useEffect(() => {
     getAllExpenses().then((data) => {
       if (data) {
-        setExpenses([...expenses, ...data]);
+        setExpenses(data);
       }
     });
   }, []);
@@ -43,8 +43,7 @@ function ExpenseTracker() {
       const res = await fetch("/.netlify/functions/expense-get-all");
       const jsonData: { data: Document[] } = await res.json();
 
-      const formattedData = jsonData.data.map((document) => document.data);
-      return formattedData;
+      return jsonData.data.map((document) => document.data);
     } catch (error) {
       console.log(error);
     }
@@ -57,34 +56,42 @@ function ExpenseTracker() {
         body: JSON.stringify(expense),
         method: "POST",
       });
+
+      const allExpenses = await getAllExpenses();
+      if (allExpenses) {
+        setExpenses(allExpenses);
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
   // TODO: Move to service component
-  const getExpense = async (expense: Expense) => {
-    try {
-      const res = await fetch("/.netlify/functions/expense-get", {
-        body: JSON.stringify(expense),
-        method: "POST",
-      });
-
-      await res.json().then(console.log);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getExpense = async (expense: Expense) => {
+  //   try {
+  //     const res = await fetch("/.netlify/functions/expense-get", {
+  //       body: JSON.stringify(expense),
+  //       method: "POST",
+  //     });
+  //
+  //     await res.json().then(console.log);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   // TODO: Move to service component
   const removeExpense = async (expense: Expense) => {
     try {
-      const res = await fetch("/.netlify/functions/expense-delete", {
+      await fetch("/.netlify/functions/expense-delete", {
         body: JSON.stringify(expense),
         method: "POST",
       });
 
-      await res.json().then(console.log);
+      const allExpenses = await getAllExpenses();
+      if (allExpenses) {
+        setExpenses(allExpenses);
+      }
     } catch (error) {
       console.log(error);
     }

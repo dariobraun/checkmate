@@ -11,13 +11,12 @@ const q = faunadb.query;
 exports.handler = async function (event) {
   const expense = JSON.parse(event.body);
   try {
-    const expenseToDelete = await client.query(
-      q.Get(q.Match(q.Index("expense_by_id"), expense.id))
+    await client.query(
+      q.Map(
+        q.Paginate(q.Match(q.Index("expense_by_id"), expense.id)),
+        q.Lambda((x) => q.Delete(x))
+      )
     );
-
-    console.log(expenseToDelete);
-
-    await client.query(q.Delete(q.Ref("expenses", expenseToDelete.id)));
 
     return {
       statusCode: 200,
