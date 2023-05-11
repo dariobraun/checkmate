@@ -3,8 +3,15 @@ import { Expense } from "../types/expense";
 import { Category } from "../types/category";
 import ExpensesTable from "./expenses-table";
 import ExpenseInputs from "./expense-inputs";
-import { Document } from "../types/fauna/document.ts";
 import { v4 as uuidv4 } from "uuid";
+import {
+  addCategory,
+  addExpense,
+  getAllCategories,
+  getAllExpenses,
+  removeCategory,
+  removeExpense,
+} from "../util/api.ts";
 
 function ExpenseTracker() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -33,116 +40,6 @@ function ExpenseTracker() {
 
   const formRef: React.RefObject<HTMLFormElement> = React.createRef();
 
-  // TODO: Move to service component
-  const getAllCategories = async () => {
-    try {
-      const res = await fetch("/.netlify/functions/category-get-all");
-      const jsonData: { data: Document<Category>[] } = await res.json();
-
-      return jsonData.data.map((document) => document.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // TODO: Move to service component
-  const getAllExpenses = async () => {
-    try {
-      const res = await fetch("/.netlify/functions/expense-get-all");
-      const jsonData: { data: Document<Expense>[] } = await res.json();
-
-      return jsonData.data.map((document) => document.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // TODO: Move to service component
-  const addExpense = async (expense: Expense) => {
-    try {
-      await fetch("/.netlify/functions/expense-create", {
-        body: JSON.stringify(expense),
-        method: "POST",
-      });
-
-      const allExpenses = await getAllExpenses();
-      if (allExpenses) {
-        setExpenses(allExpenses);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // TODO: Move to service component
-  const addCategory = async (category: Category) => {
-    try {
-      await fetch("/.netlify/functions/category-create", {
-        body: JSON.stringify(category),
-        method: "POST",
-      });
-
-      const allCategories = await getAllCategories();
-      if (allCategories) {
-        setCategories(allCategories);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // TODO: Move to service component
-  // const getExpense = async (expense: Expense) => {
-  //   try {
-  //     const res = await fetch("/.netlify/functions/expense-get", {
-  //       body: JSON.stringify(expense),
-  //       method: "POST",
-  //     });
-  //
-  //     await res.json().then(console.log);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // TODO: Move to service component
-  const removeExpense = async (expense: Expense) => {
-    setExpenses(expenses.filter((ex) => ex.id !== expense.id));
-    try {
-      await fetch("/.netlify/functions/expense-delete", {
-        body: JSON.stringify(expense),
-        method: "POST",
-      });
-
-      const allExpenses = await getAllExpenses();
-      if (allExpenses) {
-        setExpenses(allExpenses);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const removeCategory = async (category: Category) => {
-    setExpenses(expenses.filter((ex) => ex.categoryId !== category.id));
-    setCategories(categories.filter((cat) => cat.id !== category.id));
-    try {
-      await fetch("/.netlify/functions/category-delete", {
-        body: JSON.stringify(category),
-        method: "POST",
-      });
-
-      const allExpenses = await getAllExpenses();
-      const allCategories = await getAllCategories();
-      if (allExpenses && allCategories) {
-        setExpenses(allExpenses);
-        setCategories(allCategories);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const addNewExpense = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
@@ -156,7 +53,7 @@ function ExpenseTracker() {
       categoryId: formData.categoryId as string,
     };
 
-    addExpense(newExpense);
+    addExpense(newExpense, setExpenses);
 
     formRef.current?.reset();
   };
@@ -172,9 +69,7 @@ function ExpenseTracker() {
       color: formData.color as string,
     };
 
-    addCategory(newCategory);
-
-    formRef.current?.reset();
+    addCategory(newCategory, setCategories);
   };
 
   const removeNewCategoryInput = (categoryInput: {
@@ -191,9 +86,22 @@ function ExpenseTracker() {
       <ExpensesTable
         expenses={expenses}
         categories={categories}
-        onRemoveExpense={removeExpense}
-        onPersistCategory={addNewCategory}
-        onRemoveCategory={removeCategory}
+        onRemoveExpense={(expense) =>
+          removeExpense(expense, setExpenses, expenses)
+        }
+        onPersistCategory={(category) => {
+          addNewCategory(category);
+          formRef.current?.reset();
+        }}
+        onRemoveCategory={(category) =>
+          removeCategory(
+            category,
+            setExpenses,
+            setCategories,
+            expenses,
+            categories
+          )
+        }
         newCategoryInputs={newCategoryInputs}
         onRemoveNewCategoryInput={removeNewCategoryInput}
         onAddNewCategory={(categoryInput) =>
