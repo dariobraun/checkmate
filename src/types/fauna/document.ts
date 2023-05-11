@@ -1,7 +1,5 @@
-import { Expense } from "../expense.ts";
-
-export interface Document {
+export interface Document<T> {
   ref: any;
   ts: string;
-  data: Expense;
+  data: T;
 }

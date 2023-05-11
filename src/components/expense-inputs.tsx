@@ -1,5 +1,5 @@
-import React from 'react';
-import { Category } from '../types/category';
+import React from "react";
+import { Category } from "../types/category";
 
 type ExpenseInputsProps = {
   categories: Category[];
@@ -11,7 +11,11 @@ function ExpenseInputs(props: ExpenseInputsProps) {
   return (
     <>
       <h2 className="text-lg mb-2">Add Expense</h2>
-      <form onSubmit={props.onSubmit} ref={props.formRef} className="flex items-center space-x-4">
+      <form
+        onSubmit={props.onSubmit}
+        ref={props.formRef}
+        className="flex items-center space-x-4"
+      >
         <input
           type="text"
           name="description"
@@ -19,11 +23,11 @@ function ExpenseInputs(props: ExpenseInputsProps) {
           className="px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 flex-grow"
         />
         <select
-          name="category"
+          name="categoryId"
           className="px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
         >
           {props.categories.map((category) => (
-            <option key={category.id} value={category.id}>
+            <option key={category.id} value={category.id ?? undefined}>
               {category.name}
             </option>
           ))}

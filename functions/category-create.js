@@ -12,13 +12,13 @@ exports.handler = async function (event) {
   const data = JSON.parse(event.body);
   try {
     await client.query(
-      q.Create(q.Collection("expenses"), { data: { ...data } })
+      q.Create(q.Collection("categories"), { data: { ...data } })
     );
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: "Successfully created expense",
+        message: "Successfully created category",
       }),
     };
   } catch (error) {

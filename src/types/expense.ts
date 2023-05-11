@@ -1,9 +1,7 @@
-import { Category } from './category';
-
 export interface Expense {
-  id: number;
-  description: string | null;
+  id: string;
+  description: string;
   amount: number;
-  category?: Category | null;
-  date: string | null;
+  categoryId: string;
+  date: string;
 }

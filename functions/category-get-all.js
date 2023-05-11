@@ -8,17 +8,19 @@ const client = new faunadb.Client({
 
 const q = faunadb.query;
 
-exports.handler = async function (event) {
-  const data = JSON.parse(event.body);
+exports.handler = async function () {
   try {
-    await client.query(
-      q.Create(q.Collection("expenses"), { data: { ...data } })
+    const res = await client.query(
+      q.Map(
+        q.Paginate(q.Match(q.Index("all_categories"))),
+        q.Lambda((x) => q.Get(x))
+      )
     );
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: "Successfully created expense",
+        data: res.data,
       }),
     };
   } catch (error) {

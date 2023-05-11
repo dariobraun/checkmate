@@ -9,17 +9,25 @@ const client = new faunadb.Client({
 const q = faunadb.query;
 
 exports.handler = async function (event) {
-  const data = JSON.parse(event.body);
+  const category = JSON.parse(event.body);
   try {
+    // Delete Category
     await client.query(
-      q.Create(q.Collection("expenses"), { data: { ...data } })
+      q.Map(
+        q.Paginate(q.Match(q.Index("category_by_id"), category.id)),
+        q.Lambda((x) => q.Delete(x))
+      )
+    );
+    //Delete expenses in Category
+    await client.query(
+      q.Map(
+        q.Paginate(q.Match(q.Index("expenses_by_category_id"), category.id)),
+        q.Lambda((x) => q.Delete(x))
+      )
     );
 
     return {
       statusCode: 200,
-      body: JSON.stringify({
-        message: "Successfully created expense",
-      }),
     };
   } catch (error) {
     console.log(error);
