@@ -1,5 +1,5 @@
-import React from "react";
-import { Category } from "../types/category";
+import React from 'react';
+import { Category } from '../types/category';
 
 type ExpenseInputsProps = {
   categories: Category[];

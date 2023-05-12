@@ -1,8 +1,8 @@
-import { Expense } from "../types/expense";
-import { Category } from "../types/category";
-import React, { Fragment } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark, faPlus, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { Expense } from '../types/expense';
+import { Category } from '../types/category';
+import React, { Fragment } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark, faPlus, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 interface ExpensesTableProps {
   expenses: Expense[];
@@ -99,7 +99,7 @@ function ExpensesTable({
                   <tr
                     className="text-white"
                     style={{
-                      backgroundColor: category.color ?? "#6C737DFF",
+                      backgroundColor: category.color ?? '#6C737DFF',
                     }}
                   >
                     <td className="px-4 py-3 font-semibold">{category.name}</td>
@@ -108,7 +108,7 @@ function ExpensesTable({
                     <td className="px-4 py-3 font-bold">
                       {expenses
                         .filter((expense) => expense.categoryId === category.id)
-                        .reduce((acc, curr) => acc + curr.amount, 0)}{" "}
+                        .reduce((acc, curr) => acc + curr.amount, 0)}{' '}
                       €
                     </td>
                     <td className="px-4 py-3 text-center">

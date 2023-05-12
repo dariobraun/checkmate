@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Expense } from "../types/expense";
-import { Category } from "../types/category";
-import ExpensesTable from "./expenses-table";
-import ExpenseInputs from "./expense-inputs";
-import { v4 as uuidv4 } from "uuid";
+import React, { useEffect, useState } from 'react';
+import { Expense } from '../types/expense';
+import { Category } from '../types/category';
+import ExpensesTable from './expenses-table';
+import ExpenseInputs from './expense-inputs';
+import { v4 as uuidv4 } from 'uuid';
 import {
   addCategory,
   addExpense,
@@ -11,7 +11,7 @@ import {
   getAllExpenses,
   removeCategory,
   removeExpense,
-} from "../util/api.ts";
+} from '../util/api.ts';
 
 function ExpenseTracker() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
