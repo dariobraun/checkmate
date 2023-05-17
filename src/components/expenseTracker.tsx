@@ -3,7 +3,6 @@ import { Expense } from '../types/expense';
 import { Category } from '../types/category';
 import ExpensesTable from './expenses-table';
 import ExpenseInputs from './expense-inputs';
-import { v4 as uuidv4 } from 'uuid';
 import {
   addCategory,
   addExpense,
@@ -39,20 +38,14 @@ function ExpenseTracker() {
 
   const formRef: React.RefObject<HTMLFormElement> = React.createRef();
 
-  const addNewExpense = (e: React.FormEvent<HTMLFormElement>) => {
+  const addNewExpense = (
+    expense: Expense,
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    console.log(expense);
     e.preventDefault();
-    const form = new FormData(e.currentTarget);
-    const formData = Object.fromEntries(form.entries());
 
-    const newExpense: Expense = {
-      id: uuidv4(),
-      amount: parseInt(formData.amount as string, 10),
-      date: formData.date as string,
-      description: formData.description as string,
-      categoryId: formData.categoryId as string,
-    };
-
-    addExpense(newExpense, setExpenses);
+    addExpense(expense, setExpenses);
 
     formRef.current?.reset();
   };
