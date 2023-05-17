@@ -1,34 +1,60 @@
 import { Expense } from '../types/expense';
 import { Category } from '../types/category';
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faPlus, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { v4 as uuidv4 } from 'uuid';
+
+const DEFAULT_CATEGORY_COLOR = '#2692b3';
 
 interface ExpensesTableProps {
   expenses: Expense[];
   categories: Category[];
-  newCategoryInputs: Category[];
   onRemoveExpense: (expense: Expense) => void;
-  onPersistCategory: (e: React.FormEvent<HTMLFormElement>) => void;
+  onSaveCategory: (category: Category) => void;
   onRemoveCategory: (category: Category) => void;
-  onAddNewCategory: (newCategory: Category) => void;
-  onRemoveNewCategoryInput: (category: Category) => void;
 }
 
 function ExpensesTable({
   expenses,
   categories,
-  newCategoryInputs,
   onRemoveExpense,
-  onPersistCategory,
+  onSaveCategory,
   onRemoveCategory,
-  onAddNewCategory,
-  onRemoveNewCategoryInput,
 }: ExpensesTableProps) {
+  const [newCategoryInputs, setNewCategoryInputs] = useState<Category[]>([]);
+
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ): void => {
+    const categoryInputs = [...newCategoryInputs];
+    categoryInputs[index][event.currentTarget.name as keyof Category] =
+      event.target.value;
+    setNewCategoryInputs(categoryInputs);
+  };
+
+  const addNewCategory = (
+    category: { name: string; color: string },
+    index: number,
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+    const newCategory: Category = {
+      id: uuidv4(),
+      name: category.name,
+      color: category.color,
+    };
+
+    setNewCategoryInputs(newCategoryInputs.filter((_, i) => i !== index));
+
+    onSaveCategory(newCategory);
+  };
+
   return (
     <div className="w-full overflow-hidden rounded-lg shadow-xs">
       <div className="w-full overflow-x-auto">
-        <form onSubmit={onPersistCategory}>
+        <form>
           <table className="w-full whitespace-no-wrap">
             <thead>
               <tr
@@ -50,11 +76,14 @@ function ExpensesTable({
                     type="button"
                     className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded float-right"
                     onClick={() =>
-                      onAddNewCategory({
-                        id: null,
-                        name: null,
-                        color: null,
-                      })
+                      setNewCategoryInputs([
+                        ...newCategoryInputs,
+                        {
+                          id: null,
+                          name: '',
+                          color: DEFAULT_CATEGORY_COLOR,
+                        },
+                      ])
                     }
                   >
                     <FontAwesomeIcon icon={faPlus} className="me-1" />
@@ -72,24 +101,52 @@ function ExpensesTable({
               {newCategoryInputs.map((category, index) => (
                 <tr key={index}>
                   <td>
-                    <input type="text" name="name" placeholder="Name" />
-                  </td>
-                  <td>
-                    <input type="color" name="color" placeholder="Color" />
-                  </td>
-                  <td>
-                    <FontAwesomeIcon
-                      icon={faXmark}
-                      size="lg"
-                      onClick={() => onRemoveNewCategoryInput(category)}
-                      className="hover:cursor-pointer text-red-500 me-2"
+                    <input
+                      value={category.name}
+                      type="text"
+                      name="name"
+                      placeholder="Name"
+                      onChange={(e) => handleInputChange(e, index)}
+                      aria-label="category name"
                     />
-                    <button type="submit">
+                  </td>
+                  <td>
+                    <input
+                      value={category.color}
+                      type="color"
+                      name="color"
+                      placeholder="Color"
+                      onChange={(e) => handleInputChange(e, index)}
+                      aria-label="category color"
+                    />
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 my-2 mx-1 border border-blue-500 hover:border-transparent rounded float-right"
+                      onClick={() =>
+                        setNewCategoryInputs(
+                          newCategoryInputs.filter((_, i) => i !== index)
+                        )
+                      }
+                    >
+                      <FontAwesomeIcon
+                        icon={faXmark}
+                        className="text-blue-700 me-2"
+                      />
+                      Discard
+                    </button>
+
+                    <button
+                      type="submit"
+                      onClick={(e) => addNewCategory(category, index, e)}
+                      className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 my-2 mx-1  border border-blue-500 hover:border-transparent rounded float-right"
+                    >
                       <FontAwesomeIcon
                         icon={faCheck}
-                        size="lg"
-                        className="hover:cursor-pointer text-green-500"
+                        className="text-blue-700"
                       />
+                      Add
                     </button>
                   </td>
                 </tr>

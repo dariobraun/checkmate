@@ -16,7 +16,6 @@ import {
 function ExpenseTracker() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [newCategoryInputs, setNewCategoryInputs] = useState<Category[]>([]);
 
   useEffect(() => {
     let ignore = false;
@@ -58,29 +57,6 @@ function ExpenseTracker() {
     formRef.current?.reset();
   };
 
-  const addNewCategory = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = new FormData(e.currentTarget);
-    const formData = Object.fromEntries(form.entries());
-
-    const newCategory: Category = {
-      id: uuidv4(),
-      name: formData.name as string,
-      color: formData.color as string,
-    };
-
-    addCategory(newCategory, setCategories);
-  };
-
-  const removeNewCategoryInput = (categoryInput: {
-    name: string | null;
-    color: string | null;
-  }) => {
-    setNewCategoryInputs(
-      newCategoryInputs.filter((input) => input !== categoryInput)
-    );
-  };
-
   return (
     <>
       <ExpensesTable
@@ -89,8 +65,8 @@ function ExpenseTracker() {
         onRemoveExpense={(expense) =>
           removeExpense(expense, setExpenses, expenses)
         }
-        onPersistCategory={(category) => {
-          addNewCategory(category);
+        onSaveCategory={(category) => {
+          addCategory(category, setCategories);
           formRef.current?.reset();
         }}
         onRemoveCategory={(category) =>
@@ -101,11 +77,6 @@ function ExpenseTracker() {
             expenses,
             categories
           )
-        }
-        newCategoryInputs={newCategoryInputs}
-        onRemoveNewCategoryInput={removeNewCategoryInput}
-        onAddNewCategory={(categoryInput) =>
-          setNewCategoryInputs([...newCategoryInputs, categoryInput])
         }
       />
       <hr className="border-t-4 my-4" />
