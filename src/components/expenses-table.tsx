@@ -183,7 +183,11 @@ function ExpensesTable({
                       <tr key={expense.id}>
                         <td className="px-4 py-3">{index + 1}</td>
                         <td className="px-4 py-3">{expense.description}</td>
-                        <td className="px-4 py-3">{expense.date}</td>
+                        <td className="px-4 py-3">
+                          {Intl.DateTimeFormat(navigator.language).format(
+                            new Date(expense.date)
+                          )}
+                        </td>
                         <td className="px-4 py-3">{expense.amount} €</td>
                         <td className="px-4 py-3 text-center">
                           <FontAwesomeIcon

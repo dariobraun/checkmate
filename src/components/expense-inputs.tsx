@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Category } from '../types/category';
 import { Expense } from '../types/expense';
 import { v4 as uuidv4 } from 'uuid';
@@ -9,11 +9,18 @@ type ExpenseInputsProps = {
   formRef: React.RefObject<HTMLFormElement>;
 };
 
+const TIMEZONE_OFFSET = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
+const ISO8601_CURRENT_DATE = new Date(Date.now() - TIMEZONE_OFFSET)
+  .toISOString()
+  .split('T')[0];
+
 function ExpenseInputs({ categories, onSubmit, formRef }: ExpenseInputsProps) {
   const [description, setDescription] = useState('');
-  const [categoryId, setCategoryId] = useState(categories[0]?.id ?? '');
-  const [date, setDate] = useState('');
+  const [categoryId, setCategoryId] = useState('');
+  const [date, setDate] = useState(ISO8601_CURRENT_DATE);
   const [amount, setAmount] = useState(0);
+
+  useEffect(() => setCategoryId(categories[0]?.id ?? ''));
 
   return (
     <>
@@ -42,7 +49,7 @@ function ExpenseInputs({ categories, onSubmit, formRef }: ExpenseInputsProps) {
         <input
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          type="text"
+          type="date"
           name="date"
           placeholder="Date"
           className="px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -59,7 +66,6 @@ function ExpenseInputs({ categories, onSubmit, formRef }: ExpenseInputsProps) {
         <button
           type="submit"
           onClick={(e) => {
-            console.log(categoryId);
             onSubmit(
               { id: uuidv4(), description, amount, date, categoryId },
               e

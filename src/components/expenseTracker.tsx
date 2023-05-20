@@ -42,7 +42,6 @@ function ExpenseTracker() {
     expense: Expense,
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
-    console.log(expense);
     e.preventDefault();
 
     addExpense(expense, setExpenses);
