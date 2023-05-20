@@ -44,13 +44,16 @@ function ExpenseTracker() {
   ) => {
     e.preventDefault();
 
-    addExpense(expense, setExpenses);
+    if (formRef.current?.checkValidity()) {
+      addExpense(expense, setExpenses);
+    }
 
+    formRef.current?.reportValidity();
     formRef.current?.reset();
   };
 
   return (
-    <>
+    <div className="px-2">
       <ExpensesTable
         expenses={expenses}
         categories={categories}
@@ -72,12 +75,19 @@ function ExpenseTracker() {
         }
       />
       <hr className="border-t-4 my-4" />
-      <ExpenseInputs
-        categories={categories}
-        onSubmit={addNewExpense}
-        formRef={formRef}
-      />
-    </>
+      {categories.length > 0 ? (
+        <ExpenseInputs
+          categories={categories}
+          onSubmit={addNewExpense}
+          formRef={formRef}
+        />
+      ) : (
+        <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded">
+          <strong>Not Categories: </strong>
+          <span>To add an expense, create a category first.</span>
+        </div>
+      )}
+    </div>
   );
 }
 

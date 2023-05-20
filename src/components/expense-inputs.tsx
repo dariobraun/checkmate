@@ -20,7 +20,8 @@ function ExpenseInputs({ categories, onSubmit, formRef }: ExpenseInputsProps) {
   const [date, setDate] = useState(ISO8601_CURRENT_DATE);
   const [amount, setAmount] = useState(0);
 
-  useEffect(() => setCategoryId(categories[0]?.id ?? ''));
+  // set initial value of categoryId input
+  useEffect(() => setCategoryId(categories[0]?.id ?? ''), [categories]);
 
   return (
     <>
@@ -33,12 +34,14 @@ function ExpenseInputs({ categories, onSubmit, formRef }: ExpenseInputsProps) {
           name="description"
           placeholder="Description"
           className="px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 flex-grow"
+          required
         />
         <select
           value={categoryId}
           onChange={(e) => setCategoryId(e.target.value)}
           name="categoryId"
           className="px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          required
         >
           {categories.map((category) => (
             <option key={category.id} value={category.id ?? undefined}>
@@ -53,6 +56,7 @@ function ExpenseInputs({ categories, onSubmit, formRef }: ExpenseInputsProps) {
           name="date"
           placeholder="Date"
           className="px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          required
         />
         <input
           value={amount}
@@ -62,6 +66,7 @@ function ExpenseInputs({ categories, onSubmit, formRef }: ExpenseInputsProps) {
           step=".01"
           placeholder="Amount"
           className="px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          required
         />
         <button
           type="submit"

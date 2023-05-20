@@ -24,6 +24,8 @@ function ExpensesTable({
 }: ExpensesTableProps) {
   const [newCategoryInputs, setNewCategoryInputs] = useState<Category[]>([]);
 
+  const formRef: React.RefObject<HTMLFormElement> = React.createRef();
+
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
     index: number
@@ -37,24 +39,28 @@ function ExpensesTable({
   const addNewCategory = (
     category: { name: string; color: string },
     index: number,
+    formRef: React.RefObject<HTMLFormElement>,
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
-    const newCategory: Category = {
-      id: uuidv4(),
-      name: category.name,
-      color: category.color,
-    };
+    if (formRef.current?.checkValidity()) {
+      const newCategory: Category = {
+        id: uuidv4(),
+        name: category.name,
+        color: category.color,
+      };
 
-    setNewCategoryInputs(newCategoryInputs.filter((_, i) => i !== index));
+      setNewCategoryInputs(newCategoryInputs.filter((_, i) => i !== index));
 
-    onSaveCategory(newCategory);
+      onSaveCategory(newCategory);
+    }
+    formRef.current?.reportValidity();
   };
 
   return (
     <div className="w-full overflow-hidden rounded-lg shadow-xs">
       <div className="w-full overflow-x-auto">
-        <form>
+        <form ref={formRef}>
           <table className="w-full whitespace-no-wrap">
             <thead>
               <tr
@@ -108,6 +114,8 @@ function ExpensesTable({
                       placeholder="Name"
                       onChange={(e) => handleInputChange(e, index)}
                       aria-label="category name"
+                      className="w-full"
+                      required
                     />
                   </td>
                   <td>
@@ -118,6 +126,7 @@ function ExpensesTable({
                       placeholder="Color"
                       onChange={(e) => handleInputChange(e, index)}
                       aria-label="category color"
+                      required
                     />
                   </td>
                   <td>
@@ -139,7 +148,9 @@ function ExpensesTable({
 
                     <button
                       type="submit"
-                      onClick={(e) => addNewCategory(category, index, e)}
+                      onClick={(e) =>
+                        addNewCategory(category, index, formRef, e)
+                      }
                       className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 my-2 mx-1  border border-blue-500 hover:border-transparent rounded float-right"
                     >
                       <FontAwesomeIcon
