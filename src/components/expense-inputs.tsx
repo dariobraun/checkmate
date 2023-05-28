@@ -72,7 +72,13 @@ function ExpenseInputs({ categories, onSubmit, formRef }: ExpenseInputsProps) {
           type="submit"
           onClick={(e) => {
             onSubmit(
-              { id: uuidv4(), description, amount, date, categoryId },
+              {
+                id: uuidv4(),
+                description,
+                amount,
+                date,
+                categoryId,
+              },
               e
             );
           }}
