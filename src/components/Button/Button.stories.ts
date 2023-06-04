@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from './Button';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta = {
-  title: 'Example/Button',
+  title: 'Button',
   component: Button,
   tags: ['autodocs'],
   argTypes: {
@@ -40,5 +41,13 @@ export const Small: Story = {
   args: {
     size: 'small',
     label: 'Button',
+  },
+};
+
+export const Icon: Story = {
+  args: {
+    size: 'small',
+    label: 'Button',
+    icon: faCheck
   },
 };

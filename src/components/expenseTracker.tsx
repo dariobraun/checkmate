@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Expense } from '../types/expense';
 import { Category } from '../types/category';
-import ExpensesTable from './expenses-table';
-import ExpenseInputs from './expense-inputs';
+import { ExpensesTable } from './expenses-table';
+import { ExpenseInputs } from './expense-inputs';
 import {
   addCategory,
   addExpense,
@@ -12,7 +12,7 @@ import {
   removeExpense,
 } from '../util/api.ts';
 
-function ExpenseTracker() {
+export const ExpenseTracker = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
 
@@ -89,6 +89,4 @@ function ExpenseTracker() {
       )}
     </div>
   );
-}
-
-export default ExpenseTracker;
+};

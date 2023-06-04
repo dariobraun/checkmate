@@ -4,6 +4,7 @@ import React, { Fragment, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faPlus, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { v4 as uuidv4 } from 'uuid';
+import { Button } from './Button/Button';
 
 const DEFAULT_CATEGORY_COLOR = '#2692b3';
 
@@ -15,13 +16,13 @@ interface ExpensesTableProps {
   onRemoveCategory: (category: Category) => void;
 }
 
-function ExpensesTable({
+export const ExpensesTable = ({
   expenses,
   categories,
   onRemoveExpense,
   onSaveCategory,
   onRemoveCategory,
-}: ExpensesTableProps) {
+}: ExpensesTableProps) => {
   const [newCategoryInputs, setNewCategoryInputs] = useState<Category[]>([]);
 
   const formRef: React.RefObject<HTMLFormElement> = React.createRef();
@@ -78,23 +79,23 @@ function ExpensesTable({
                 <th className="px-4 py-3">Date</th>
                 <th className="px-4 py-3">Amount</th>
                 <th className="px-4 py-3">
-                  <button
-                    type="button"
-                    className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded float-right"
-                    onClick={() =>
-                      setNewCategoryInputs([
-                        ...newCategoryInputs,
-                        {
-                          id: null,
-                          name: '',
-                          color: DEFAULT_CATEGORY_COLOR,
-                        },
-                      ])
-                    }
-                  >
-                    <FontAwesomeIcon icon={faPlus} className="me-1" />
-                    Add Category
-                  </button>
+                  <div className="float-right">
+                    <Button
+                      primary={true}
+                      label="Add Category"
+                      icon={faPlus}
+                      onClick={() =>
+                        setNewCategoryInputs([
+                          ...newCategoryInputs,
+                          {
+                            id: null,
+                            name: '',
+                            color: DEFAULT_CATEGORY_COLOR,
+                          },
+                        ])
+                      }
+                    />
+                  </div>
                 </th>
               </tr>
             </thead>
@@ -130,35 +131,29 @@ function ExpensesTable({
                     />
                   </td>
                   <td>
-                    <button
-                      type="button"
-                      className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 my-2 mx-1 border border-blue-500 hover:border-transparent rounded float-right"
-                      onClick={() =>
-                        setNewCategoryInputs(
-                          newCategoryInputs.filter((_, i) => i !== index)
-                        )
-                      }
-                    >
-                      <FontAwesomeIcon
+                    <div className="my-2 float-right">
+                      <Button
+                        label="Discard"
                         icon={faXmark}
-                        className="text-blue-700 me-2"
+                        type="button"
+                        size="small"
+                        onClick={() =>
+                          setNewCategoryInputs(
+                            newCategoryInputs.filter((_, i) => i !== index)
+                          )
+                        }
                       />
-                      Discard
-                    </button>
 
-                    <button
-                      type="submit"
-                      onClick={(e) =>
-                        addNewCategory(category, index, formRef, e)
-                      }
-                      className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 my-2 mx-1  border border-blue-500 hover:border-transparent rounded float-right"
-                    >
-                      <FontAwesomeIcon
+                      <Button
+                        label="Add"
                         icon={faCheck}
-                        className="text-blue-700"
+                        type="submit"
+                        size="small"
+                        onClick={(e) =>
+                          addNewCategory(category, index, formRef, e)
+                        }
                       />
-                      Add
-                    </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -218,6 +213,4 @@ function ExpensesTable({
       </div>
     </div>
   );
-}
-
-export default ExpensesTable;
+};
