@@ -1,18 +1,21 @@
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { Category } from '../types/category';
 import { Button } from './Button/Button';
+import { ColorPicker } from './ColorPicker/ColorPicker';
 
 interface NewCategoryInputsProps {
   index: number;
   category: Category;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onNameChange: (value: string) => void;
+  onColorChange: (value: string) => void;
   onDiscard: () => void;
   onSave: (e: React.MouseEvent<HTMLButtonElement>, category: Category) => void;
 }
 
 export const NewCatetgoryInputs = ({
   category,
-  onChange,
+  onNameChange,
+  onColorChange,
   onDiscard,
   onSave,
 }: NewCategoryInputsProps) => {
@@ -24,21 +27,16 @@ export const NewCatetgoryInputs = ({
           type="text"
           name="name"
           placeholder="Name"
-          onChange={(e) => onChange(e)}
+          onChange={(e) => onNameChange(e.currentTarget.value)}
           aria-label="category name"
           className="w-full"
           required
         />
       </td>
       <td>
-        <input
-          value={category.color}
-          type="color"
-          name="color"
-          placeholder="Color"
-          onChange={(e) => onChange(e)}
-          aria-label="category color"
-          required
+        <ColorPicker
+          onChange={(colorValue) => onColorChange(colorValue)}
+          color={category.color}
         />
       </td>
       <td>

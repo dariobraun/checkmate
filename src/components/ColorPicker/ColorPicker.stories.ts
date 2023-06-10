@@ -10,5 +10,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: { value: '#fffff' },
+  args: { color: '#6366F1' },
+};
+
+export const Popover: Story = {
+  args: { color: '#6366F1', popover: true },
 };

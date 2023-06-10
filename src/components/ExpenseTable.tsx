@@ -28,13 +28,14 @@ export const ExpensesTable = ({
 
   const formRef: React.RefObject<HTMLFormElement> = React.createRef();
 
-  const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ): void => {
+  const handleCategoryNameChange = (name: string, index: number): void => {
     const categoryInputs = [...newCategoryInputs];
-    categoryInputs[index][event.currentTarget.name as keyof Category] =
-      event.target.value;
+    categoryInputs[index].name = name;
+    setNewCategoryInputs(categoryInputs);
+  };
+  const handleCategoryColorChange = (color: string, index: number): void => {
+    const categoryInputs = [...newCategoryInputs];
+    categoryInputs[index].color = color;
     setNewCategoryInputs(categoryInputs);
   };
 
@@ -110,7 +111,10 @@ export const ExpensesTable = ({
                 <NewCatetgoryInputs
                   category={category}
                   index={index}
-                  onChange={(e) => handleInputChange(e, index)}
+                  onNameChange={(name) => handleCategoryNameChange(name, index)}
+                  onColorChange={(color) =>
+                    handleCategoryColorChange(color, index)
+                  }
                   onDiscard={() =>
                     setNewCategoryInputs(
                       newCategoryInputs.filter((_, i) => i !== index)
