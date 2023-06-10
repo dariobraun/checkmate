@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 // Improved version of https://usehooks.com/useOnClickOutside/
 const useClickOutside = (ref, handler) => {
   useEffect(() => {
-    console.log('CLICK OUTSIDE');
     let startedInside = false;
     let startedWhenMounted = false;
 

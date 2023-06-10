@@ -5,16 +5,32 @@ import { HexColorPicker } from 'react-colorful';
 // @ts-ignore
 import useClickOutside from './util/useClickOutside';
 
+const getSizeClasses = (size: 'small' | 'medium' | 'full') => {
+  switch (size) {
+    case 'small': {
+      return 'w-[28px] h-[28px]';
+    }
+    case 'full': {
+      return 'w-full h-[28px]';
+    }
+    default: {
+      return 'w-[56px] h-[28px]';
+    }
+  }
+};
+
 interface ColorPickerProps {
   color: string;
   onChange: (value: string) => void;
   popover?: boolean;
+  size?: 'small' | 'medium' | 'full';
 }
 
 export const ColorPicker = ({
   color,
   onChange,
   popover = false,
+  size = 'small',
 }: ColorPickerProps) => {
   const popoverRef = useRef(null);
   const [isOpen, toggle] = useState(false);
@@ -25,7 +41,9 @@ export const ColorPicker = ({
   return popover ? (
     <div className="relative">
       <div
-        className="w-[28px] h-[28px] shadow-md rounded-lg border-2 border-gray-300 cursor-pointer"
+        className={`${getSizeClasses(
+          size
+        )} shadow-md rounded-lg border-2 border-gray-300 cursor-pointer`}
         style={{ backgroundColor: color }}
         onClick={() => toggle(true)}
       />

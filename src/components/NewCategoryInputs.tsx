@@ -29,7 +29,7 @@ export const NewCatetgoryInputs = ({
           placeholder="Name"
           onChange={(e) => onNameChange(e.currentTarget.value)}
           aria-label="category name"
-          className="w-full"
+          className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           required
         />
       </td>
@@ -37,6 +37,7 @@ export const NewCatetgoryInputs = ({
         <ColorPicker
           onChange={(colorValue) => onColorChange(colorValue)}
           color={category.color}
+          popover={true}
         />
       </td>
       <td>
