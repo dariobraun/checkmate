@@ -46,7 +46,7 @@ export const ExpenseInputs = ({
           value={categoryId}
           useValue="id"
           entries={categories}
-          onChange={(e) => setCategoryId(e.target.value)}
+          onChange={(value) => setCategoryId(value)}
           name="categoryId"
           required={true}
           displayValue="name"

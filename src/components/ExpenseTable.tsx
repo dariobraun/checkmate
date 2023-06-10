@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faPlus, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { v4 as uuidv4 } from 'uuid';
 import { Button } from './Button/Button';
+import { NewCatetgoryInputs } from './NewCategoryInputs';
 
 const DEFAULT_CATEGORY_COLOR = '#2692b3';
 
@@ -106,56 +107,20 @@ export const ExpensesTable = ({
             "
             >
               {newCategoryInputs.map((category, index) => (
-                <tr key={index}>
-                  <td>
-                    <input
-                      value={category.name}
-                      type="text"
-                      name="name"
-                      placeholder="Name"
-                      onChange={(e) => handleInputChange(e, index)}
-                      aria-label="category name"
-                      className="w-full"
-                      required
-                    />
-                  </td>
-                  <td>
-                    <input
-                      value={category.color}
-                      type="color"
-                      name="color"
-                      placeholder="Color"
-                      onChange={(e) => handleInputChange(e, index)}
-                      aria-label="category color"
-                      required
-                    />
-                  </td>
-                  <td>
-                    <div className="my-2 float-right">
-                      <Button
-                        label="Discard"
-                        icon={faXmark}
-                        type="button"
-                        size="small"
-                        onClick={() =>
-                          setNewCategoryInputs(
-                            newCategoryInputs.filter((_, i) => i !== index)
-                          )
-                        }
-                      />
-
-                      <Button
-                        label="Add"
-                        icon={faCheck}
-                        type="submit"
-                        size="small"
-                        onClick={(e) =>
-                          addNewCategory(category, index, formRef, e)
-                        }
-                      />
-                    </div>
-                  </td>
-                </tr>
+                <NewCatetgoryInputs
+                  category={category}
+                  index={index}
+                  onChange={(e) => handleInputChange(e, index)}
+                  onDiscard={() =>
+                    setNewCategoryInputs(
+                      newCategoryInputs.filter((_, i) => i !== index)
+                    )
+                  }
+                  onSave={(e, category) =>
+                    addNewCategory(category, index, formRef, e)
+                  }
+                  key={index}
+                />
               ))}
               {categories.map((category) => (
                 <Fragment key={category.id}>

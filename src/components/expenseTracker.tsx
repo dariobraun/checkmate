@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Expense } from '../types/expense';
-import { Category } from '../types/category';
-import { ExpensesTable } from './expenses-table';
-import { ExpenseInputs } from './expense-inputs';
+import { Expense } from '../types/expense.ts';
+import { Category } from '../types/category.ts';
+import { ExpensesTable } from './ExpenseTable.tsx';
+import { ExpenseInputs } from './ExpenseInputs.tsx';
 import {
   addCategory,
   addExpense,

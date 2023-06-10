@@ -18,13 +18,17 @@ export const Select = ({
   displayValue,
   entries,
   onChange,
+  name,
   required,
 }: SelectProps) => {
   return (
     <>
       <RxSelect.Root value={value} onValueChange={onChange} required={required}>
-        <RxSelect.Trigger className="rounded inline-flex items-center leading-none border-indigo-500 border-2 p-2 text-sm">
-          <RxSelect.Value placeholder="Select a fruit…" />
+        <RxSelect.Trigger
+          aria-label={name}
+          className="rounded-full inline-flex items-center leading-none border-indigo-500 border-2 p-2 text-sm"
+        >
+          <RxSelect.Value placeholder="Select an entry..." />
           <RxSelect.Icon className="text-indigo-500 ms-2">
             <FontAwesomeIcon icon={faAngleDown}></FontAwesomeIcon>
           </RxSelect.Icon>

@@ -32,6 +32,5 @@ export const Primary: Story = {
   args: {
     displayValue: 'name',
     entries,
-    onChange: () => undefined,
   },
 };
