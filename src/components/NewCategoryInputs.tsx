@@ -2,6 +2,7 @@ import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { Category } from '../types/category';
 import { Button } from './Button/Button';
 import { ColorPicker } from './ColorPicker/ColorPicker';
+import { TextInput } from './TextInput/TextInput';
 
 interface NewCategoryInputsProps {
   index: number;
@@ -20,17 +21,14 @@ export const NewCatetgoryInputs = ({
   onSave,
 }: NewCategoryInputsProps) => {
   return (
-    <tr>
+    <tr className="bg-gray-100">
+      <td></td>
       <td>
-        <input
+        <TextInput
           value={category.name}
-          type="text"
-          name="name"
-          placeholder="Name"
-          onChange={(e) => onNameChange(e.currentTarget.value)}
-          aria-label="category name"
-          className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          required
+          onChange={onNameChange}
+          placeholder="Enter category name..."
+          required={true}
         />
       </td>
       <td>
@@ -38,10 +36,11 @@ export const NewCatetgoryInputs = ({
           onChange={(colorValue) => onColorChange(colorValue)}
           color={category.color}
           popover={true}
+          size="full"
         />
       </td>
       <td>
-        <div className="my-2 float-right">
+        <div className="my-2">
           <Button
             label="Discard"
             icon={faXmark}
@@ -59,6 +58,7 @@ export const NewCatetgoryInputs = ({
           />
         </div>
       </td>
+      <td className="rounded-r-full"></td>
     </tr>
   );
 };
