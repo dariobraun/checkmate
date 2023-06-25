@@ -4,9 +4,11 @@ import { Expense } from '../types/expense';
 import { v4 as uuidv4 } from 'uuid';
 import { Button } from './Button/Button';
 import { Select } from './Select/Select';
+import { DatePicker } from './DatePicker/DatePicker';
 
 type ExpenseInputsProps = {
   categories: Category[];
+  selectedDate: string;
   onSubmit: (expense: Expense, e: React.MouseEvent<HTMLButtonElement>) => void;
   formRef: React.RefObject<HTMLFormElement>;
 };
@@ -18,6 +20,7 @@ const ISO8601_CURRENT_DATE = new Date(Date.now() - TIMEZONE_OFFSET)
 
 export const ExpenseInputs = ({
   categories,
+  selectedDate,
   onSubmit,
   formRef,
 }: ExpenseInputsProps) => {
@@ -28,6 +31,7 @@ export const ExpenseInputs = ({
 
   // set initial value of categoryId input
   useEffect(() => setCategoryId(categories[0]?.id ?? ''), [categories]);
+  useEffect(() => setDate(selectedDate), [selectedDate]);
 
   return (
     <>
@@ -51,15 +55,7 @@ export const ExpenseInputs = ({
           required={true}
           displayValue="name"
         />
-        <input
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          type="date"
-          name="date"
-          placeholder="Date"
-          className="px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          required
-        />
+        <DatePicker value={date} onChange={(value) => setDate(value)} />
         <input
           value={amount}
           onChange={(e) => setAmount(+e.target.value)}

@@ -1,43 +1,51 @@
-import { Document } from "../types/fauna/document.js";
-import { Expense } from "../types/expense.js";
-import { Category } from "../types/category.ts";
+import { Category } from '../types/category.ts';
+import { Expense } from '../types/expense.js';
 
-export const getAllExpenses = async () => {
+export const getAllExpenses = async (): Promise<Expense[] | undefined> => {
   try {
-    const res = await fetch("/.netlify/functions/expense-get-all");
-    const jsonData: { data: Document<Expense>[] } = await res.json();
+    const res = await fetch('/.netlify/functions/expense-get-all');
+    const jsonData: { data: Expense[] } = await res.json();
 
-    return jsonData.data.map((document) => document.data);
+    return jsonData.data;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const getExpensesByMonthYear = async (
+  dateInput: string
+): Promise<Expense[]> => {
+  try {
+    const res = await fetch(
+      `/.netlify/functions/expenses-get-by-month-year?dateInput=${dateInput}`
+    );
+    const jsonData: { data: Expense[] } = await res.json();
+
+    return jsonData.data;
+  } catch (error) {
+    console.log(error);
+    return [];
   }
 };
 
 export const getAllCategories = async () => {
   try {
-    const res = await fetch("/.netlify/functions/category-get-all");
-    const jsonData: { data: Document<Category>[] } = await res.json();
+    const res = await fetch('/.netlify/functions/category-get-all');
+    const jsonData: { data: Category[] } = await res.json();
 
-    return jsonData.data.map((document) => document.data);
+    return jsonData.data;
   } catch (error) {
     console.log(error);
+    return [];
   }
 };
 
-export const addExpense = async (
-  expense: Expense,
-  setExpenses: (expenses: Expense[]) => void
-) => {
+export const addExpense = async (expense: Expense) => {
   try {
-    await fetch("/.netlify/functions/expense-create", {
+    await fetch('/.netlify/functions/expense-create', {
       body: JSON.stringify(expense),
-      method: "POST",
+      method: 'POST',
     });
-
-    const allExpenses = await getAllExpenses();
-    if (allExpenses) {
-      setExpenses(allExpenses);
-    }
   } catch (error) {
     console.log(error);
   }
@@ -48,9 +56,9 @@ export const addCategory = async (
   setCategories: (categories: Category[]) => void
 ) => {
   try {
-    await fetch("/.netlify/functions/category-create", {
+    await fetch('/.netlify/functions/category-create', {
       body: JSON.stringify(category),
-      method: "POST",
+      method: 'POST',
     });
 
     const allCategories = await getAllCategories();
@@ -69,9 +77,9 @@ export const removeExpense = async (
 ) => {
   setExpenses(expenses.filter((ex) => ex.id !== expense.id));
   try {
-    await fetch("/.netlify/functions/expense-delete", {
+    await fetch('/.netlify/functions/expense-delete', {
       body: JSON.stringify(expense),
-      method: "POST",
+      method: 'POST',
     });
 
     const allExpenses = await getAllExpenses();
@@ -93,9 +101,9 @@ export const removeCategory = async (
   setExpenses(expenses.filter((ex) => ex.categoryId !== category.id));
   setCategories(categories.filter((cat) => cat.id !== category.id));
   try {
-    await fetch("/.netlify/functions/category-delete", {
+    await fetch('/.netlify/functions/category-delete', {
       body: JSON.stringify(category),
-      method: "POST",
+      method: 'POST',
     });
 
     const allExpenses = await getAllExpenses();

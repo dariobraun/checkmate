@@ -64,7 +64,7 @@ export const ExpensesTable = ({
     <div className="w-full overflow-hidden rounded-lg shadow-xs">
       <div className="w-full overflow-x-auto">
         <form ref={formRef}>
-          <table className="w-full whitespace-no-wrap">
+          <table className="w-full whitespace-no-wrap table-fixed">
             <thead>
               <tr
                 className="
@@ -103,7 +103,6 @@ export const ExpensesTable = ({
             </thead>
             <tbody
               className="
-              divide-y
               bg-white
             "
             >
@@ -156,7 +155,7 @@ export const ExpensesTable = ({
                   {expenses
                     .filter((expense) => expense.categoryId === category.id)
                     .map((expense, index) => (
-                      <tr key={expense.id}>
+                      <tr key={expense.id} className="border-t-2">
                         <td className="px-4 py-3">{index + 1}</td>
                         <td className="px-4 py-3">{expense.description}</td>
                         <td className="px-4 py-3">
