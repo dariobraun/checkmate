@@ -70,48 +70,23 @@ export const addCategory = async (
   }
 };
 
-export const removeExpense = async (
-  expense: Expense,
-  setExpenses: (expenses: Expense[]) => void,
-  expenses: Expense[]
-) => {
-  setExpenses(expenses.filter((ex) => ex.id !== expense.id));
+export const removeExpense = async (expense: Expense) => {
   try {
     await fetch('/.netlify/functions/expense-delete', {
       body: JSON.stringify(expense),
       method: 'POST',
     });
-
-    const allExpenses = await getAllExpenses();
-    if (allExpenses) {
-      setExpenses(allExpenses);
-    }
   } catch (error) {
     console.log(error);
   }
 };
 
-export const removeCategory = async (
-  category: Category,
-  setExpenses: (expenses: Expense[]) => void,
-  setCategories: (categories: Category[]) => void,
-  expenses: Expense[],
-  categories: Category[]
-) => {
-  setExpenses(expenses.filter((ex) => ex.categoryId !== category.id));
-  setCategories(categories.filter((cat) => cat.id !== category.id));
+export const removeCategory = async (category: Category) => {
   try {
     await fetch('/.netlify/functions/category-delete', {
       body: JSON.stringify(category),
       method: 'POST',
     });
-
-    const allExpenses = await getAllExpenses();
-    const allCategories = await getAllCategories();
-    if (allExpenses && allCategories) {
-      setExpenses(allExpenses);
-      setCategories(allCategories);
-    }
   } catch (error) {
     console.log(error);
   }

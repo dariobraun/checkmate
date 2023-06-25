@@ -69,6 +69,21 @@ export const ExpenseTracker = () => {
     formRef.current?.reset();
   };
 
+  const deleteExpense = (expense: Expense) => {
+    setExpenses(expenses.filter((ex) => ex.id !== expense.id));
+    const expenseRemoved = removeExpense(expense);
+    expenseRemoved.then(() => getExpensesByMonthYear(selectedDate));
+  };
+
+  const deleteCategory = (category: Category) => {
+    setExpenses(expenses.filter((ex) => ex.categoryId !== category.id));
+    setCategories(categories.filter((cat) => cat.id !== category.id));
+
+    const categoryRemoved = removeCategory(category);
+    const categoriesFetched = categoryRemoved.then(() => getAllCategories);
+    categoriesFetched.then(() => getExpensesByMonthYear(selectedDate));
+  };
+
   return (
     <div className="px-2">
       <div className="pt-4">
@@ -82,22 +97,12 @@ export const ExpenseTracker = () => {
       <ExpensesTable
         expenses={expenses}
         categories={categories}
-        onRemoveExpense={(expense) =>
-          removeExpense(expense, setExpenses, expenses)
-        }
+        onRemoveExpense={(expense) => deleteExpense(expense)}
         onSaveCategory={(category) => {
           addCategory(category, setCategories);
           formRef.current?.reset();
         }}
-        onRemoveCategory={(category) =>
-          removeCategory(
-            category,
-            setExpenses,
-            setCategories,
-            expenses,
-            categories
-          )
-        }
+        onRemoveCategory={(category) => deleteCategory(category)}
       />
       <hr className="border-t-4 my-4" />
       {categories.length > 0 ? (

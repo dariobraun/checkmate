@@ -42,7 +42,7 @@ export const Select = ({
               {entries.map((entry, index) => (
                 <Fragment key={useValue ? entry[useValue] : index}>
                   <RxSelect.Item
-                    className="hover:bg-indigo-500 hover:text-white hover:border-0 px-6 py-2 focus:outline-none"
+                    className="hover:bg-indigo-500 hover:text-white hover:border-0 px-6 py-2 focus:outline-none cursor-pointer"
                     value={useValue ? entry[useValue] : entry}
                   >
                     <RxSelect.ItemText>{entry[displayValue]}</RxSelect.ItemText>
