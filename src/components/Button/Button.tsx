@@ -41,15 +41,12 @@ const getModeClasses = (isPrimary: boolean) => {
 
 const getSizeClasses = (size: 'small' | 'medium' | 'large') => {
   switch (size) {
-    case 'small': {
+    case 'small':
       return 'px-4 py-2.5';
-    }
-    case 'large': {
+    case 'large':
       return 'px-6 py-3';
-    }
-    default: {
+    default:
       return 'px-5 py-2.5';
-    }
   }
 };
 

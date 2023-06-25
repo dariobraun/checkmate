@@ -75,6 +75,7 @@ export const ExpenseTracker = () => {
         <DatePicker
           value={selectedDate}
           onChange={(value) => setSelectedDate(value)}
+          size="xl"
         />
       </div>
 
