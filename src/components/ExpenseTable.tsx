@@ -1,6 +1,6 @@
 import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Category } from '../types/category';
 import { Expense } from '../types/expense';
@@ -126,9 +126,8 @@ export const ExpensesTable = ({
                 />
               ))}
               {categories.map((category) => (
-                <>
+                <Fragment key={category.id}>
                   <tr
-                    key={category.id}
                     className="text-white"
                     style={{
                       backgroundColor: category.color ?? '#6C737DFF',
@@ -174,7 +173,7 @@ export const ExpensesTable = ({
                         </td>
                       </tr>
                     ))}
-                </>
+                </Fragment>
               ))}
             </tbody>
           </table>

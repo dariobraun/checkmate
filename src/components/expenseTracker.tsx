@@ -1,3 +1,8 @@
+import {
+  faAngleDoubleLeft,
+  faAngleDoubleRight,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import { Category } from '../types/category.ts';
 import { Expense } from '../types/expense.ts';
@@ -17,7 +22,7 @@ export const ExpenseTracker = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedDate, setSelectedDate] = useState<string>(
-    new Date().toISOString()
+    new Date().toISOString().split('T')[0]
   );
 
   // Fetch expenses on date change
@@ -84,14 +89,42 @@ export const ExpenseTracker = () => {
     categoriesFetched.then(() => getExpensesByMonthYear(selectedDate));
   };
 
+  const previousOrNextMonth = (prevOrNext: -1 | 1) => {
+    const previousMonth = new Date(selectedDate).getMonth() + prevOrNext;
+    const newDate = new Date(selectedDate).setMonth(previousMonth);
+    setSelectedDate(new Date(newDate).toISOString());
+  };
+
+  const getPreviousOrNextMonth = (prevOrNext: -1 | 1) => {
+    const previousMonth = new Date(selectedDate).getMonth() + prevOrNext;
+    const newDate = new Date(selectedDate).setMonth(previousMonth);
+    return Intl.DateTimeFormat(undefined, { month: 'long' }).format(newDate);
+  };
+
   return (
     <div className="px-2">
-      <div className="pt-4">
-        <DatePicker
-          value={selectedDate}
-          onChange={(value) => setSelectedDate(value)}
-          size="xl"
-        />
+      <div className="mt-4 flex bg-indigo-500">
+        <div
+          className="flex-1 flex justify-center items-center text-white text-4xl cursor-pointer font-bold hover:text-yellow-500"
+          onClick={() => previousOrNextMonth(-1)}
+        >
+          <FontAwesomeIcon icon={faAngleDoubleLeft} className="me-4" />
+          <span>{getPreviousOrNextMonth(-1)}</span>
+        </div>
+        <div className="bg-white p-1 rounded-full">
+          <DatePicker
+            value={selectedDate}
+            onChange={(value) => setSelectedDate(value)}
+            size="xl"
+          />
+        </div>{' '}
+        <div
+          className="flex-1 flex justify-center items-center text-white text-4xl cursor-pointer font-bold hover:text-yellow-500"
+          onClick={() => previousOrNextMonth(1)}
+        >
+          <span>{getPreviousOrNextMonth(1)}</span>
+          <FontAwesomeIcon icon={faAngleDoubleRight} className="ms-4" />
+        </div>
       </div>
 
       <ExpensesTable
@@ -114,7 +147,7 @@ export const ExpenseTracker = () => {
         />
       ) : (
         <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded">
-          <strong>Not Categories: </strong>
+          <strong>No categories: </strong>
           <span>To add an expense, create a category first.</span>
         </div>
       )}

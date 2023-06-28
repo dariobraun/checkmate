@@ -13,11 +13,6 @@ type ExpenseInputsProps = {
   formRef: React.RefObject<HTMLFormElement>;
 };
 
-const TIMEZONE_OFFSET = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
-const ISO8601_CURRENT_DATE = new Date(Date.now() - TIMEZONE_OFFSET)
-  .toISOString()
-  .split('T')[0];
-
 export const ExpenseInputs = ({
   categories,
   selectedDate,
@@ -26,7 +21,7 @@ export const ExpenseInputs = ({
 }: ExpenseInputsProps) => {
   const [description, setDescription] = useState('');
   const [categoryId, setCategoryId] = useState('');
-  const [date, setDate] = useState(ISO8601_CURRENT_DATE);
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [amount, setAmount] = useState(0);
 
   // set initial value of categoryId input
