@@ -89,28 +89,29 @@ export const ExpenseTracker = () => {
     categoriesFetched.then(() => getExpensesByMonthYear(selectedDate));
   };
 
-  const previousOrNextMonth = (prevOrNext: -1 | 1) => {
-    const previousMonth = new Date(selectedDate).getMonth() + prevOrNext;
-    const newDate = new Date(selectedDate).setMonth(previousMonth);
-    setSelectedDate(new Date(newDate).toISOString());
+  const setSelectedDateMonth = (prevOrNextAmount: number) => {
+    const newMonth = new Date(selectedDate).getMonth() + prevOrNextAmount;
+    const newDate = new Date(selectedDate).setMonth(newMonth);
+    const newDateWithoutTime = new Date(newDate).toISOString().split('T')[0];
+    setSelectedDate(newDateWithoutTime);
   };
 
-  const getPreviousOrNextMonth = (prevOrNext: -1 | 1) => {
-    const previousMonth = new Date(selectedDate).getMonth() + prevOrNext;
-    const newDate = new Date(selectedDate).setMonth(previousMonth);
+  const getSelectedMonth = (prevOrNextAmount: number) => {
+    const newMonth = new Date(selectedDate).getMonth() + prevOrNextAmount;
+    const newDate = new Date(selectedDate).setMonth(newMonth);
     return Intl.DateTimeFormat(undefined, { month: 'long' }).format(newDate);
   };
 
   return (
     <div className="px-2">
       <div className="mt-4 flex bg-indigo-500">
-        <div
-          className="flex-1 flex justify-center items-center text-white text-4xl cursor-pointer font-bold hover:text-yellow-500"
-          onClick={() => previousOrNextMonth(-1)}
+        <button
+          className="flex-1 flex justify-center items-center text-white text-4xl font-bold hover:text-yellow-500 hover:shadow-md"
+          onClick={() => setSelectedDateMonth(-1)}
         >
           <FontAwesomeIcon icon={faAngleDoubleLeft} className="me-4" />
-          <span>{getPreviousOrNextMonth(-1)}</span>
-        </div>
+          <span>{getSelectedMonth(-1)}</span>
+        </button>
         <div className="bg-white p-1 rounded-full">
           <DatePicker
             value={selectedDate}
@@ -118,13 +119,13 @@ export const ExpenseTracker = () => {
             size="xl"
           />
         </div>{' '}
-        <div
-          className="flex-1 flex justify-center items-center text-white text-4xl cursor-pointer font-bold hover:text-yellow-500"
-          onClick={() => previousOrNextMonth(1)}
+        <button
+          className="flex-1 flex justify-center items-center text-white text-4xl font-bold hover:text-yellow-500 hover:shadow-md"
+          onClick={() => setSelectedDateMonth(1)}
         >
-          <span>{getPreviousOrNextMonth(1)}</span>
+          <span>{getSelectedMonth(1)}</span>
           <FontAwesomeIcon icon={faAngleDoubleRight} className="ms-4" />
-        </div>
+        </button>
       </div>
 
       <ExpensesTable
