@@ -15,7 +15,7 @@ import {
   removeExpense,
 } from '../util/api.ts';
 import { DatePicker } from './DatePicker/DatePicker.tsx';
-import { ExpenseInputs } from './ExpenseInputs.tsx';
+import { ExpenseInputs } from '../composites/ExpenseInputs/ExpenseInputs.tsx';
 import { ExpensesTable } from './ExpenseTable.tsx';
 
 export const ExpenseTracker = () => {
@@ -56,12 +56,7 @@ export const ExpenseTracker = () => {
 
   const formRef: React.RefObject<HTMLFormElement> = React.createRef();
 
-  const addNewExpense = (
-    expense: Expense,
-    e: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    e.preventDefault();
-
+  const addNewExpense = (expense: Expense) => {
     if (formRef.current?.checkValidity()) {
       const expenseAdded = addExpense(expense);
       const expensesByMonth = expenseAdded.then(() =>

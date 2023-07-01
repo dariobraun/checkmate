@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Category } from '../types/category';
-import { Expense } from '../types/expense';
+import { Category } from '../../types/category.ts';
+import { Expense } from '../../types/expense.ts';
 import { v4 as uuidv4 } from 'uuid';
-import { Button } from './Button/Button';
-import { Select } from './Select/Select';
-import { DatePicker } from './DatePicker/DatePicker';
+import { Button } from '../../components/Button/Button.tsx';
+import { Select } from '../../components/Select/Select.tsx';
+import { DatePicker } from '../../components/DatePicker/DatePicker.tsx';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 type ExpenseInputsProps = {
   categories: Category[];
   selectedDate: string;
-  onSubmit: (expense: Expense, e: React.MouseEvent<HTMLButtonElement>) => void;
-  formRef: React.RefObject<HTMLFormElement>;
+  onSubmit: (expense: Expense) => void;
+  formRef?: React.RefObject<HTMLFormElement>;
 };
 
 export const ExpenseInputs = ({
@@ -24,14 +25,16 @@ export const ExpenseInputs = ({
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [amount, setAmount] = useState(0);
 
-  // set initial value of categoryId input
   useEffect(() => setCategoryId(categories[0]?.id ?? ''), [categories]);
   useEffect(() => setDate(selectedDate), [selectedDate]);
 
   return (
     <>
-      <h2 className="text-lg mb-2">Add Expense</h2>
-      <form ref={formRef} className="flex items-center space-x-4">
+      <h2 className="text-lg mb-2 text-indigo-500 font-bold">Add Expense</h2>
+      <form
+        ref={formRef}
+        className="flex flex-col md:flex-row items-start md:items-center items-center space-y-2 md:space-y-0 md:space-x-4"
+      >
         <input
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -63,18 +66,17 @@ export const ExpenseInputs = ({
         />
         <Button
           label="Add"
+          icon={faPlus}
           type="submit"
           onClick={(e) => {
-            onSubmit(
-              {
-                id: uuidv4(),
-                description,
-                amount,
-                date,
-                categoryId,
-              },
-              e
-            );
+            e.preventDefault();
+            onSubmit({
+              id: uuidv4(),
+              description,
+              amount,
+              date,
+              categoryId,
+            });
           }}
         />
       </form>
