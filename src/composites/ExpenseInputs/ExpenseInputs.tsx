@@ -23,7 +23,7 @@ export const ExpenseInputs = ({
   const [description, setDescription] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState('');
 
   useEffect(() => setCategoryId(categories[0]?.id ?? ''), [categories]);
   useEffect(() => setDate(selectedDate), [selectedDate]);
@@ -33,7 +33,7 @@ export const ExpenseInputs = ({
       <h2 className="text-lg mb-2 text-indigo-500 font-bold">Add Expense</h2>
       <form
         ref={formRef}
-        className="flex flex-col md:flex-row items-start md:items-center items-center space-y-2 md:space-y-0 md:space-x-4"
+        className="flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 md:space-x-4"
       >
         <input
           value={description}
@@ -56,7 +56,7 @@ export const ExpenseInputs = ({
         <DatePicker value={date} onChange={(value) => setDate(value)} />
         <input
           value={amount}
-          onChange={(e) => setAmount(+e.target.value)}
+          onChange={(e) => setAmount(e.target.value)}
           type="number"
           name="amount"
           step=".01"
@@ -73,7 +73,7 @@ export const ExpenseInputs = ({
             onSubmit({
               id: uuidv4(),
               description,
-              amount,
+              amount: parseInt(amount),
               date,
               categoryId,
             });
