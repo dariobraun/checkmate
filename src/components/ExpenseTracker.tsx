@@ -17,6 +17,7 @@ import {
 import { DatePicker } from './DatePicker/DatePicker.tsx';
 import { ExpenseInputs } from '../composites/ExpenseInputs/ExpenseInputs.tsx';
 import { ExpensesTable } from './ExpenseTable.tsx';
+import useMobileMediaQuery from '../hooks/useMediaQuery.tsx';
 
 export const ExpenseTracker = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -24,6 +25,8 @@ export const ExpenseTracker = () => {
   const [selectedDate, setSelectedDate] = useState<string>(
     new Date().toISOString().split('T')[0]
   );
+
+  const isMobile = useMobileMediaQuery();
 
   // Fetch expenses on date change
   useEffect(() => {
@@ -105,20 +108,20 @@ export const ExpenseTracker = () => {
           onClick={() => setSelectedDateMonth(-1)}
         >
           <FontAwesomeIcon icon={faAngleDoubleLeft} className="me-4" />
-          <span>{getSelectedMonth(-1)}</span>
+          <span className="hidden sm:block">{getSelectedMonth(-1)}</span>
         </button>
         <div className="bg-white p-1 rounded-full">
           <DatePicker
             value={selectedDate}
             onChange={(value) => setSelectedDate(value)}
-            size="xl"
+            size={isMobile ? 'large' : 'xl'}
           />
         </div>{' '}
         <button
           className="flex-1 flex justify-center items-center text-white text-4xl font-bold hover:text-yellow-500 hover:shadow-md"
           onClick={() => setSelectedDateMonth(1)}
         >
-          <span>{getSelectedMonth(1)}</span>
+          <span className="hidden sm:block">{getSelectedMonth(1)}</span>
           <FontAwesomeIcon icon={faAngleDoubleRight} className="ms-4" />
         </button>
       </div>

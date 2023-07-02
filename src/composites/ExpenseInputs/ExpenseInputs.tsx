@@ -33,7 +33,7 @@ export const ExpenseInputs = ({
       <h2 className="text-lg mb-2 text-indigo-500 font-bold">Add Expense</h2>
       <form
         ref={formRef}
-        className="flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 md:space-x-4"
+        className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4"
       >
         <input
           value={description}
@@ -59,7 +59,6 @@ export const ExpenseInputs = ({
           onChange={(e) => setAmount(e.target.value)}
           type="number"
           name="amount"
-          step=".01"
           placeholder="Amount"
           className="px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           required
@@ -77,6 +76,8 @@ export const ExpenseInputs = ({
               date,
               categoryId,
             });
+            setAmount('');
+            setDescription('');
           }}
         />
       </form>

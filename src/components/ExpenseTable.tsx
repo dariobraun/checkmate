@@ -6,8 +6,9 @@ import { Category } from '../types/category';
 import { Expense } from '../types/expense';
 import { Button } from './Button/Button';
 import { NewCatetgoryInputs } from './NewCategoryInputs';
+import useMobileMediaQuery from '../hooks/useMediaQuery';
 
-const DEFAULT_CATEGORY_COLOR = '#2692b3';
+const DEFAULT_CATEGORY_COLOR = '#6366f1';
 
 interface ExpensesTableProps {
   expenses: Expense[];
@@ -25,6 +26,7 @@ export const ExpensesTable = ({
   onRemoveCategory,
 }: ExpensesTableProps) => {
   const [newCategoryInputs, setNewCategoryInputs] = useState<Category[]>([]);
+  const isMobile = useMobileMediaQuery();
 
   const formRef: React.RefObject<HTMLFormElement> = React.createRef();
 
@@ -76,10 +78,10 @@ export const ExpensesTable = ({
                 border-b
               "
               >
-                <th className="px-4 py-3 bg-indigo">#</th>
-                <th className="px-4 py-3">Description</th>
-                <th className="px-4 py-3">Date</th>
-                <th className="px-4 py-3">Amount</th>
+                <th className="px-4 py-3">{isMobile ? '' : '#'}</th>
+                <th className="px-4 py-3">{isMobile ? '' : 'Description'}</th>
+                <th className="px-4 py-3">{isMobile ? '' : 'Date'}</th>
+                <th className="px-4 py-3">{isMobile ? '' : 'Amount'}</th>
                 <th className="px-4 py-3">
                   <div className="float-right">
                     <Button
@@ -136,7 +138,7 @@ export const ExpensesTable = ({
                     <td className="px-4 py-3 font-semibold">{category.name}</td>
                     <td className="px-4 py-3"></td>
                     <td className="px-4 py-3"></td>
-                    <td className="px-4 py-3 font-bold">
+                    <td className="px-4 py-3 font-bold whitespace-nowrap">
                       {expenses
                         .filter((expense) => expense.categoryId === category.id)
                         .reduce((acc, curr) => acc + curr.amount, 0)}{' '}
@@ -155,12 +157,16 @@ export const ExpensesTable = ({
                     .filter((expense) => expense.categoryId === category.id)
                     .map((expense, index) => (
                       <tr key={expense.id} className="border-t-2">
-                        <td className="px-4 py-3">{index + 1}</td>
+                        <td className="px-4 py-3">
+                          {isMobile ? '' : index + 1}
+                        </td>
                         <td className="px-4 py-3">{expense.description}</td>
                         <td className="px-4 py-3">
-                          {Intl.DateTimeFormat(navigator.language).format(
-                            new Date(expense.date)
-                          )}
+                          {isMobile
+                            ? ''
+                            : Intl.DateTimeFormat(navigator.language).format(
+                                new Date(expense.date)
+                              )}
                         </td>
                         <td className="px-4 py-3">{expense.amount} €</td>
                         <td className="px-4 py-3 text-center">

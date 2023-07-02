@@ -22,8 +22,7 @@ export const NewCatetgoryInputs = ({
 }: NewCategoryInputsProps) => {
   return (
     <tr className="bg-gray-100">
-      <td></td>
-      <td>
+      <td className="w-full">
         <TextInput
           value={category.name}
           onChange={onNameChange}
@@ -40,7 +39,7 @@ export const NewCatetgoryInputs = ({
         />
       </td>
       <td>
-        <div className="my-2">
+        <div className="my-2 whitespace-nowrap">
           <Button
             label="Discard"
             icon={faXmark}
@@ -58,6 +57,7 @@ export const NewCatetgoryInputs = ({
           />
         </div>
       </td>
+      <td></td>
       <td className="rounded-r-full"></td>
     </tr>
   );

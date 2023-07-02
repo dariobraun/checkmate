@@ -79,7 +79,7 @@ export const Button = ({
   return (
     <button
       type={type}
-      className={`${BASE_BUTTON_CLASSES} ${computedClasses}`}
+      className={`${BASE_BUTTON_CLASSES} ${computedClasses} whitespace-nowrap`}
       style={{ backgroundColor }}
       {...props}
     >
