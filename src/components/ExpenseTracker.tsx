@@ -101,8 +101,8 @@ export const ExpenseTracker = () => {
   };
 
   return (
-    <div className="px-2">
-      <div className="mt-4 flex bg-indigo-500">
+    <div>
+      <div className="flex bg-slate-950">
         <button
           className="flex-1 flex justify-center items-center text-white text-4xl font-bold hover:text-yellow-500 hover:shadow-md"
           onClick={() => setSelectedDateMonth(-1)}
@@ -136,20 +136,22 @@ export const ExpenseTracker = () => {
         }}
         onRemoveCategory={(category) => deleteCategory(category)}
       />
-      <hr className="border-t-4 my-4" />
-      {categories.length > 0 ? (
-        <ExpenseInputs
-          categories={categories}
-          selectedDate={selectedDate}
-          onSubmit={addNewExpense}
-          formRef={formRef}
-        />
-      ) : (
-        <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded">
-          <strong>No categories: </strong>
-          <span>To add an expense, create a category first.</span>
-        </div>
-      )}
+      <div className="mx-4">
+        <hr className="border-t-4 my-4" />
+        {categories.length > 0 ? (
+          <ExpenseInputs
+            categories={categories}
+            selectedDate={selectedDate}
+            onSubmit={addNewExpense}
+            formRef={formRef}
+          />
+        ) : (
+          <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded">
+            <strong>No categories: </strong>
+            <span>To add an expense, create a category first.</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

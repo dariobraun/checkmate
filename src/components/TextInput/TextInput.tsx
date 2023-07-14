@@ -14,7 +14,7 @@ export const TextInput = ({
   onChange,
 }: TextInputProps) => {
   return (
-    <label className="text-xs text-indigo-500">
+    <label className="text-xs text-slate-950">
       {label}
       <input
         value={value}
@@ -22,7 +22,7 @@ export const TextInput = ({
         placeholder={placeholder}
         onChange={(e) => onChange(e.currentTarget.value)}
         aria-label={label}
-        className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 p-2"
+        className="w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-slate-950 focus:border-slate-950 p-2"
         required={required}
       />
     </label>

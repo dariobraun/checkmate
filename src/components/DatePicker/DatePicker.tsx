@@ -36,7 +36,7 @@ export const DatePicker = ({
 
   return (
     <div
-      className={`${computedContainerClasses} bg-white border-2 border-indigo-500 rounded-full w-fit cursor-pointer`}
+      className={`${computedContainerClasses} bg-white border-2 border-slate-950 rounded-full w-fit cursor-pointer`}
       onClick={() => inputRef.current?.showPicker()}
     >
       <input

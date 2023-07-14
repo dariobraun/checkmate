@@ -28,26 +28,26 @@ export const Select = ({
       <RxSelect.Root value={value} onValueChange={onChange} required={required}>
         <RxSelect.Trigger
           aria-label={name}
-          className="rounded-full inline-flex items-center focus:outline-none leading-none border-indigo-500 border-2 p-2 text-sm"
+          className="rounded-full inline-flex items-center focus:outline-none leading-none border-slate-950 border-2 p-2 text-sm"
         >
           <RxSelect.Value placeholder="Select an entry..." />
-          <RxSelect.Icon className="text-indigo-500 ms-2">
+          <RxSelect.Icon className="text-slate-950 ms-2">
             <FontAwesomeIcon icon={faAngleDown}></FontAwesomeIcon>
           </RxSelect.Icon>
         </RxSelect.Trigger>
         <RxSelect.Portal>
-          <RxSelect.Content className="bg-white rounded-md border-2 border-indigo-500 text-sm">
+          <RxSelect.Content className="bg-white rounded-md border-2 border-slate-950 text-sm">
             <RxSelect.ScrollUpButton />
             <RxSelect.Viewport>
               {entries.map((entry, index) => (
                 <Fragment key={useValue ? entry[useValue] : index}>
                   <RxSelect.Item
-                    className="hover:bg-indigo-500 hover:text-white hover:border-0 px-6 py-2 focus:outline-none cursor-pointer"
+                    className="hover:bg-slate-950 hover:text-white hover:border-0 px-6 py-2 focus:outline-none cursor-pointer"
                     value={useValue ? entry[useValue] : entry}
                   >
                     <RxSelect.ItemText>{entry[displayValue]}</RxSelect.ItemText>
                   </RxSelect.Item>
-                  <RxSelect.Separator className="h-[1px] bg-indigo-200 mx-2"></RxSelect.Separator>
+                  <RxSelect.Separator className="h-[1px] bg-slate-700 mx-2"></RxSelect.Separator>
                 </Fragment>
               ))}
             </RxSelect.Viewport>

@@ -35,8 +35,8 @@ interface ButtonProps {
 
 const getModeClasses = (isPrimary: boolean) => {
   return isPrimary
-    ? 'bg-indigo-500 text-white hover:bg-indigo-600'
-    : 'hover:bg-indigo-100';
+    ? 'bg-slate-950 text-white hover:bg-white hover:text-slate-950'
+    : 'hover:bg-slate-950 hover:text-white';
 };
 
 const getSizeClasses = (size: 'small' | 'medium' | 'large') => {
@@ -51,7 +51,7 @@ const getSizeClasses = (size: 'small' | 'medium' | 'large') => {
 };
 
 const BASE_BUTTON_CLASSES =
-  'border-2 border-indigo-500 rounded-full shadow-sm leading-none inline-block text-sm';
+  'border-2 border-slate-950 rounded-full shadow-sm leading-none inline-block text-sm';
 
 /**
  * Primary UI component for user interaction
@@ -71,11 +71,6 @@ export const Button = ({
     return [modeClasses, sizeClasses].join(' ');
   }, [primary, size]);
 
-  const computedIconClasses = useMemo(
-    () => (primary ? 'text-white' : 'text-indigo-500'),
-    [primary]
-  );
-
   return (
     <button
       type={type}
@@ -83,12 +78,7 @@ export const Button = ({
       style={{ backgroundColor }}
       {...props}
     >
-      {icon && (
-        <FontAwesomeIcon
-          icon={icon}
-          className={`me-1 ${computedIconClasses}`}
-        />
-      )}
+      {icon && <FontAwesomeIcon icon={icon} className="me-1" />}
       {label}
     </button>
   );

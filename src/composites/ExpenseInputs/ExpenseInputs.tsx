@@ -30,7 +30,7 @@ export const ExpenseInputs = ({
 
   return (
     <>
-      <h2 className="text-lg mb-2 text-indigo-500 font-bold">Add Expense</h2>
+      <h2 className="text-lg mb-2 text-slate-950 font-bold">Add Expense</h2>
       <form
         ref={formRef}
         className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4"
@@ -41,7 +41,7 @@ export const ExpenseInputs = ({
           type="text"
           name="description"
           placeholder="Description"
-          className="px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 flex-grow"
+          className="px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-slate-950 focus:border-slate-950 flex-grow"
           required
         />
         <Select
@@ -60,7 +60,7 @@ export const ExpenseInputs = ({
           type="number"
           name="amount"
           placeholder="Amount"
-          className="px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          className="px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-slate-950 focus:border-slate-950"
           required
         />
         <Button
