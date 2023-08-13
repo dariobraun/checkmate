@@ -105,13 +105,13 @@ export const ExpenseTracker = () => {
     <div>
       <div className="flex bg-slate-950">
         <button
-          className="flex-1 flex justify-center items-center text-white text-4xl font-bold hover:text-yellow-500 hover:shadow-md"
+          className="flex-1 flex justify-center items-center text-white text-4xl font-bold transition transform hover:scale-105"
           onClick={() => setSelectedDateMonth(-1)}
         >
           <FontAwesomeIcon icon={faAngleDoubleLeft} className="me-4" />
           <span className="hidden sm:block">{getSelectedMonth(-1)}</span>
         </button>
-        <div className="bg-white p-1 rounded-full">
+        <div className="bg-white p-1 rounded-full transition transform hover:scale-105">
           <DatePicker
             value={selectedDate}
             onChange={(value) => setSelectedDate(value)}
@@ -119,7 +119,7 @@ export const ExpenseTracker = () => {
           />
         </div>{' '}
         <button
-          className="flex-1 flex justify-center items-center text-white text-4xl font-bold hover:text-yellow-500 hover:shadow-md"
+          className="flex-1 flex justify-center items-center text-white text-4xl font-bold transition transform hover:scale-105"
           onClick={() => setSelectedDateMonth(1)}
         >
           <span className="hidden sm:block">{getSelectedMonth(1)}</span>

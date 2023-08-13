@@ -1,4 +1,4 @@
-import { faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrashCan, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { Fragment, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -147,9 +147,9 @@ export const ExpensesTable = ({
                     <td className="px-4 py-3 text-center rounded-r-full">
                       <FontAwesomeIcon
                         onClick={() => onRemoveCategory(category)}
-                        icon={faXmark}
+                        icon={faTrashCan}
                         size="lg"
-                        className="hover:cursor-pointer text-rose-500"
+                        className="hover:cursor-pointer text-white hover:text-rose-500"
                       />
                     </td>
                   </tr>
