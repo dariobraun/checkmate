@@ -61,6 +61,7 @@ export const ExpenseTracker = () => {
 
   const addNewExpense = (expense: Expense) => {
     if (formRef.current?.checkValidity()) {
+      setExpenses([...expenses, expense]);
       const expenseAdded = addExpense(expense);
       const expensesByMonth = expenseAdded.then(() =>
         getExpensesByMonthYear(selectedDate)
@@ -131,6 +132,7 @@ export const ExpenseTracker = () => {
         categories={categories}
         onRemoveExpense={(expense) => deleteExpense(expense)}
         onSaveCategory={(category) => {
+          setCategories([...categories, category]);
           addCategory(category, setCategories);
           formRef.current?.reset();
         }}

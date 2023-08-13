@@ -63,8 +63,8 @@ export const ExpensesTable = ({
   };
 
   return (
-    <div className="w-full overflow-hidden rounded-lg shadow-xs">
-      <div className="w-full overflow-x-auto">
+    <div className="w-full rounded-lg shadow-xs">
+      <div className="w-full">
         <form ref={formRef}>
           <table className="w-full whitespace-no-wrap table-fixed">
             <thead>
