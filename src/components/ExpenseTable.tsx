@@ -44,10 +44,8 @@ export const ExpensesTable = ({
   const addNewCategory = (
     category: { name: string; color: string },
     index: number,
-    formRef: React.RefObject<HTMLFormElement>,
-    e: React.MouseEvent<HTMLButtonElement>
+    formRef: React.RefObject<HTMLFormElement>
   ) => {
-    e.preventDefault();
     if (formRef.current?.checkValidity()) {
       const newCategory: Category = {
         id: uuidv4(),
@@ -78,11 +76,11 @@ export const ExpensesTable = ({
                 border-b
               "
               >
-                <th className="px-4 py-3">{isMobile ? '' : '#'}</th>
-                <th className="px-4 py-3">{isMobile ? '' : 'Description'}</th>
-                <th className="px-4 py-3">{isMobile ? '' : 'Date'}</th>
-                <th className="px-4 py-3">{isMobile ? '' : 'Amount'}</th>
-                <th className="px-4 py-3">
+                <th className="p-3">{isMobile ? '' : '#'}</th>
+                <th className="p-3">{isMobile ? '' : 'Description'}</th>
+                <th className="p-3">{isMobile ? '' : 'Date'}</th>
+                <th className="p-3">{isMobile ? '' : 'Amount'}</th>
+                <th className="p-3">
                   <div className="float-right">
                     <Button
                       primary={true}
@@ -121,8 +119,8 @@ export const ExpensesTable = ({
                       newCategoryInputs.filter((_, i) => i !== index)
                     )
                   }
-                  onSave={(e, category) =>
-                    addNewCategory(category, index, formRef, e)
+                  onSave={(category) =>
+                    addNewCategory(category, index, formRef)
                   }
                   key={index}
                 />
@@ -135,16 +133,16 @@ export const ExpensesTable = ({
                       backgroundColor: category.color ?? '#6C737DFF',
                     }}
                   >
-                    <td className="px-4 py-3 font-semibold">{category.name}</td>
-                    <td className="px-4 py-3"></td>
-                    <td className="px-4 py-3"></td>
-                    <td className="px-4 py-3 font-bold whitespace-nowrap">
+                    <td className="p-3 font-semibold">{category.name}</td>
+                    <td className="p-3"></td>
+                    <td className="p-3"></td>
+                    <td className="p-3 font-bold whitespace-nowrap">
                       {expenses
                         .filter((expense) => expense.categoryId === category.id)
                         .reduce((acc, curr) => acc + curr.amount, 0)}{' '}
                       €
                     </td>
-                    <td className="px-4 py-3 text-center rounded-r-full">
+                    <td className="p-4 text-center rounded-r-full">
                       <FontAwesomeIcon
                         onClick={() => onRemoveCategory(category)}
                         icon={faTrashCan}
@@ -157,19 +155,17 @@ export const ExpensesTable = ({
                     .filter((expense) => expense.categoryId === category.id)
                     .map((expense, index) => (
                       <tr key={expense.id} className="border-t-2">
-                        <td className="px-4 py-3">
-                          {isMobile ? '' : index + 1}
-                        </td>
-                        <td className="px-4 py-3">{expense.description}</td>
-                        <td className="px-4 py-3">
+                        <td className="p-3">{isMobile ? '' : index + 1}</td>
+                        <td className="p-3">{expense.description}</td>
+                        <td className="p-3">
                           {isMobile
                             ? ''
                             : Intl.DateTimeFormat(navigator.language).format(
                                 new Date(expense.date)
                               )}
                         </td>
-                        <td className="px-4 py-3">{expense.amount} €</td>
-                        <td className="px-4 py-3 text-center">
+                        <td className="p-3">{expense.amount} €</td>
+                        <td className="p-3 text-center">
                           <FontAwesomeIcon
                             onClick={() => onRemoveExpense(expense)}
                             icon={faXmark}
